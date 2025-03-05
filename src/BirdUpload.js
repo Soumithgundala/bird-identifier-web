@@ -4,6 +4,10 @@ import "./BirdUpload.css";
 const BirdUpload = () => {
   const [preview, setPreview] = useState("");
   const [species, setSpecies] = useState("");
+  const [Lifespan, setLifespan] = useState("");
+  const [scientificName, setscietificName] = useState("");
+  const [CommonFood, setCommonFood] = useState("");
+  const [CommonPredators, setCommonPredators] = useState("");
   const [description, setDescription] = useState("");
   const [soundUrl, setSoundUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,6 +20,10 @@ const BirdUpload = () => {
       setSpecies("");
       setDescription("");
       setSoundUrl("");
+      setCommonFood("");
+      setCommonPredators("");
+      setLifespan("");
+      setscietificName("");
       setError("");
     }
   };
@@ -44,8 +52,12 @@ const BirdUpload = () => {
       if (!response.ok) throw new Error(data.error || "Classification failed");
 
       setSpecies(data.species);
+      setscietificName(data.scientificName)
+      setLifespan(data.Lifespan);
+      setCommonFood(data.CommonFood);
+      setCommonPredators(data.CommonPredators)
       setDescription(data.description);
-      setSoundUrl(data.soundUrl); // Add this line
+      setSoundUrl(data.soundUrl); 
 
     } catch (err) {
       setError(err.message);
@@ -56,9 +68,8 @@ const BirdUpload = () => {
 
   return (
     <div className="container">
-      <h1>Bird Species Identifier</h1>
       <form onSubmit={handleSubmit}>
-        <div className="upload-section">
+        <div className="upload-section"></div>
           <input
             type="file"
             id="image"
@@ -69,9 +80,15 @@ const BirdUpload = () => {
           <label htmlFor="image" className="upload-btn">
             Choose Image
           </label>
-          {preview && <img src={preview} alt="Preview" className="preview" />}
-        </div>
-
+          <div className="container">
+          <div className="search-container">
+          <input 
+          type="text" 
+          className="search-bar" 
+          placeholder="Search bird species..."
+          />
+          </div>
+</div>
         <button type="submit" disabled={loading} className="submit-btn">
           {loading ? "Analyzing..." : "Identify Species"}
         </button>
@@ -82,7 +99,20 @@ const BirdUpload = () => {
           <div className="results">
             <h2>Identification Results</h2>
             <div className="species">Species: {species}</div>
+            <div className="scientificName">{scientificName}</div>
+            <div className="Lifespan">{Lifespan}</div>
+            <div className="CommonFood">{CommonFood}</div>
+            <div className="CommonPredators">{CommonPredators}</div>
             <div className="description">{description}</div>
+            <div className="results">
+            <div className="text-content">
+            <h2 className="highlight-header">Identification Results</h2>
+            </div>
+            <div className="image-content">
+            <img src={preview} alt="Preview" className="preview" />
+            </div>
+            </div>
+            
             
             {/* Add audio player section */}
             {soundUrl ? (

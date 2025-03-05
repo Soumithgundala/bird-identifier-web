@@ -7,14 +7,11 @@ function App() {
         <div className="App">
             <header className="app-header">
                 <h1>AI Bird Identifier</h1>
-                <p>Upload a bird image to identify its species</p>
+                <p>Upload a bird image to identify Bird</p>
             </header>
             <main>
                 <BirdUpload />
             </main>
-            <footer>
-                <p>Powered by GPT-4 Vision API</p>
-            </footer>
         </div>
     );
 }
