@@ -1,57 +1,106 @@
 import { useState } from "react";
+import "./BirdUpload.css";
 
 const BirdUpload = () => {
-    const [image, setImage] = useState(null);
-    const [classification, setClassification] = useState("");
-    const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState("");
+  const [species, setSpecies] = useState("");
+  const [description, setDescription] = useState("");
+  const [soundUrl, setSoundUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const handleImageChange = (event) => {
-        setImage(event.target.files[0]);
-    };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+      setSpecies("");
+      setDescription("");
+      setSoundUrl("");
+      setError("");
+    }
+  };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (!image) {
-            alert("Please select an image!");
-            return;
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!preview) {
+      setError("Please select an image first!");
+      return;
+    }
 
-        const formData = new FormData();
-        formData.append("image", image);
+    setLoading(true);
+    setError("");
 
-        setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", e.target.image.files[0]);
 
-        try {
-            const response = await fetch("http://localhost:5000/classify", {
-                method: "POST",
-                body: formData
-            });
+      const response = await fetch("http://localhost:5000/classify-bird", {
+        method: "POST",
+        body: formData,
+      });
 
-            const data = await response.json();
-            if (data.classification) {
-                setClassification(data.classification);
-            } else {
-                setClassification("Failed to classify image.");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            setClassification("Error classifying image.");
-        }
+      const data = await response.json();
+      
+      if (!response.ok) throw new Error(data.error || "Classification failed");
 
-        setLoading(false);
-    };
+      setSpecies(data.species);
+      setDescription(data.description);
+      setSoundUrl(data.soundUrl); // Add this line
 
-    return (
-        <div>
-            <h2>Upload a Bird Image</h2>
-            <form onSubmit={handleSubmit}>
-                <input type="file" accept="image/*" onChange={handleImageChange} />
-                <button type="submit">Classify</button>
-            </form>
-            {loading && <p>Classifying...</p>}
-            {classification && <p>Bird Species: {classification}</p>}
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container">
+      <h1>Bird Species Identifier</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="upload-section">
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            onChange={handleImageChange}
+            hidden
+          />
+          <label htmlFor="image" className="upload-btn">
+            Choose Image
+          </label>
+          {preview && <img src={preview} alt="Preview" className="preview" />}
         </div>
-    );
+
+        <button type="submit" disabled={loading} className="submit-btn">
+          {loading ? "Analyzing..." : "Identify Species"}
+        </button>
+
+        {error && <div className="error">{error}</div>}
+
+        {species && (
+          <div className="results">
+            <h2>Identification Results</h2>
+            <div className="species">Species: {species}</div>
+            <div className="description">{description}</div>
+            
+            {/* Add audio player section */}
+            {soundUrl ? (
+              <div className="sound-section">
+                <h3>Bird Sound</h3>
+                <audio controls>
+                  <source src={soundUrl} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            ) : (
+              <div className="no-sound">No sound sample available</div>
+            )}
+          </div>
+        )}
+      </form>
+    </div>
+  );
 };
 
 export default BirdUpload;
