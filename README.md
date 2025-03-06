@@ -1,11 +1,11 @@
 # 🦜 Bird Identifier: Image to Sound & Location
 
 ## 🌟 Project Aim
-Bird identification has always been a challenge for nature enthusiasts, researchers, and photographers. While many apps can classify birds from images, none integrate **bird sounds, geographic locations, and related images** seamlessly. This project bridges that gap by providing an innovative system that:
+Bird identification has always been a challenge for nature enthusiasts, researchers, and photographers. While many apps can classify birds from images, none integrate **bird sounds, geographic locations, habitats and related images** seamlessly. This project bridges that gap by providing an innovative system that:
 
 - **Identifies a bird species from an image** 📸
 - **Retrieves its sound from Xeno-Canto** 🎶
-- **Fetches additional images from Unsplash** 🖼️
+- **Fetches additional images of birds and its habitat(nest) from Unsplash** 🖼️
 - **Maps its habitat using Leaflet.js** 🌍
 
 This is a **one-stop platform** for birdwatchers and researchers to gain an immersive experience in bird identification.
@@ -21,7 +21,10 @@ This is a **one-stop platform** for birdwatchers and researchers to gain an imme
 3. **OpenAI extracts relevant details:**
    - Scientific Name 🧪
    - Common Name 🏷️
-4. **Scientific Name is used to fetch:**
+   - Food
+   - Common Predators
+   - xenocantoPrompt
+4. **xenocantoPrompt is used to fetch:**
    - **Bird sounds from Xeno-Canto** 🎵
    - **Longitude & Latitude from Xeno-Canto** 📍
 5. **Common Name is used to fetch:**
@@ -50,11 +53,12 @@ flowchart TD;
 - **Similar Bird Images** 📷 (via Unsplash API)
 - **Nest Images of the Bird** 🏡 (via Unsplash API)
 - **Bird's Natural Habitat Mapping** 🗺️ (via React Leaflet)
+- **Bird's Migration through animation**
 
 ---
 
 ## 🏗️ Tech Stack
-- **Frontend:** React.js (Next.js optional), TailwindCSS, Leaflet.js
+- **Frontend:** React.js (Next.js optional), Leaflet.js
 - **Backend:** Node.js, Express.js
 - **APIs Used:**
   - OpenAI Vision API 🧠
@@ -74,7 +78,7 @@ cd bird-identifier
 
 ### 2️⃣ Install Dependencies
 ```sh
-npm install
+npm install fs dotenv express multer OpenAI dotenv  cors axios leaflet react-leaflet
 ```
 
 ### 3️⃣ Setup Environment Variables
@@ -86,7 +90,11 @@ UNSPLASH_API_KEY=your_unsplash_api_key
 ```
 
 ### 4️⃣ Start the Application
+nodemon index.js
 ```sh
+create new terminal  
+----
+cd bird-identifier-web
 npm start
 ```
 
@@ -123,10 +131,10 @@ This project is **MIT Licensed**. Feel free to use and modify!
 ---
 
 ## 📬 Contact
-💡 **Your Name**  
-📧 your.email@example.com  
-🐦 Twitter: [@yourhandle](https://twitter.com/yourhandle)  
-🚀 GitHub: [@yourusername](https://github.com/yourusername)
+soumithgundala@gmail.com
+kanthalaraju@gmail.com
+enduritarun@gmail.com
+🚀 GitHub: [@soumithgundala](https://github.com/soumithgundala)
 
 ---
 
