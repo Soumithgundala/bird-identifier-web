@@ -4,12 +4,12 @@ import "./BirdUpload.css";
 const BirdUpload = () => {
   const [preview, setPreview] = useState("");
   const [species, setSpecies] = useState("");
-  const [Lifespan, setLifespan] = useState("");
+  const [lifeSpan, setlifeSpan] = useState("");
   const [scientificName, setscietificName] = useState("");
-  const [CommonFood, setCommonFood] = useState("");
-  const [CommonPredators, setCommonPredators] = useState("");
+  const [commonFood, setcommonFood] = useState("");
+  const [commonPredators, setcommonPredators] = useState("");
   const [description, setDescription] = useState("");
-  const [soundUrl, setSoundUrl] = useState("");
+  const [soundUrls, setsoundUrls] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -18,12 +18,12 @@ const BirdUpload = () => {
     if (file) {
       setPreview(URL.createObjectURL(file));
       setSpecies("");
-      setDescription("");
-      setSoundUrl("");
-      setCommonFood("");
-      setCommonPredators("");
-      setLifespan("");
       setscietificName("");
+      setlifeSpan("");
+      setcommonFood("");
+      setcommonPredators("");
+      setDescription("");
+      setsoundUrls("");
       setError("");
     }
   };
@@ -53,11 +53,11 @@ const BirdUpload = () => {
 
       setSpecies(data.species);
       setscietificName(data.scientificName)
-      setLifespan(data.Lifespan);
-      setCommonFood(data.CommonFood);
-      setCommonPredators(data.CommonPredators)
+      setlifeSpan(data.lifespan);
+      setcommonFood(data.commonFood);
+      setcommonPredators(data.commonPredators)
       setDescription(data.description);
-      setSoundUrl(data.soundUrl); 
+      setsoundUrls(data.soundUrl); 
 
     } catch (err) {
       setError(err.message);
@@ -99,10 +99,10 @@ const BirdUpload = () => {
           <div className="results">
             <h2>Identification Results</h2>
             <div className="species">Species: {species}</div>
-            <div className="scientificName">{scientificName}</div>
-            <div className="Lifespan">{Lifespan}</div>
-            <div className="CommonFood">{CommonFood}</div>
-            <div className="CommonPredators">{CommonPredators}</div>
+            <div className="scientificName">Scientific Name: {scientificName}</div>
+            <div className="Lifespan">Lifespan: {lifeSpan}</div>
+            <div className="CommonFood">Common Food: {commonFood}</div>
+            <div className="CommonPredators">Common Predators: {commonPredators}</div>
             <div className="description">{description}</div>
             <div className="results">
             <div className="text-content">
@@ -115,16 +115,18 @@ const BirdUpload = () => {
             
             
             {/* Add audio player section */}
-            {soundUrl ? (
+            {soundUrls?.length > 0 ? (
               <div className="sound-section">
-                <h3>Bird Sound</h3>
-                <audio controls>
-                  <source src={soundUrl} type="audio/mpeg" />
-                  Your browser does not support the audio element.
-                </audio>
+                <h3>Bird Sounds</h3>
+                {soundUrls.map((url, index) => (
+                  <audio key={index} controls className="audio-player">
+                  <source src={url} type="audio/mpeg" />
+                   Your browser does not support the audio element.
+                  </audio>
+              ))}
               </div>
             ) : (
-              <div className="no-sound">No sound sample available</div>
+              <div className="no-sound">No sound samples available</div>
             )}
           </div>
         )}
