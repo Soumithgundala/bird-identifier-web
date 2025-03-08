@@ -57,7 +57,7 @@ const BirdUpload = () => {
       setcommonFood(data.commonFood);
       setcommonPredators(data.commonPredators)
       setDescription(data.description);
-      setsoundUrls(data.soundUrl); 
+      setsoundUrls(data.soundUrls); 
 
     } catch (err) {
       setError(err.message);
