@@ -1,40 +1,25 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./BirdUpload.css";
 
 const BirdUpload = () => {
   const [preview, setPreview] = useState("");
-  const [species, setSpecies] = useState("");
-  const [lifeSpan, setLifeSpan] = useState("");
-  const [scientificName, setScientificName] = useState("");
-  const [commonFood, setCommonFood] = useState("");
-  const [commonPredators, setCommonPredators] = useState("");
-  const [description, setDescription] = useState("");
-  const [soundUrls, setSoundUrls] = useState([]);
-  const [birdImages, setBirdImages] = useState([]);
-  const [nestImage, setNestImage] = useState(""); // NEW: Nest Image
+  const [speciesData, setSpeciesData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setSpecies("");
-      setScientificName("");
-      setLifeSpan("");
-      setCommonFood("");
-      setCommonPredators("");
-      setDescription("");
-      setSoundUrls([]);
-      setBirdImages([]);
-      setNestImage(""); // Reset nest image
-      setError("");
-    }
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result);
+    reader.readAsDataURL(file);
+    setError("");
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const file = e.target.elements.image.files[0];
-
     if (!preview) {
       setError("Please select an image first!");
       return;
@@ -45,40 +30,33 @@ const BirdUpload = () => {
 
     try {
       const formData = new FormData();
-      formData.append("image", e.target.image.files[0]);
+      formData.append("image", fileInputRef.current.files[0]);
 
       const response = await fetch("http://localhost:5000/classify-bird", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Classification failed");
+      }
 
-      if (!response.ok) throw new Error(data.error || "Classification failed");
-
-      setSpecies(data.species);
-      setScientificName(data.scientificName);
-      setLifeSpan(data.lifespan);
-      setCommonFood(data.commonFood);
-      setCommonPredators(data.commonPredators);
-      setDescription(data.description);
-      setSoundUrls(data.soundUrls || []);
-      setBirdImages(data.birdImages || []);
-      setNestImage(data.nestImage || []); // NEW: Get Nest Image URL
-
+      const responseData = await response.json();
+      setSpeciesData(responseData);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Failed to process image");
     } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="container">
       <form onSubmit={handleSubmit}>
         <div className="upload-section">
           <input
+            ref={fileInputRef}
             type="file"
             id="image"
             accept="image/*"
@@ -86,84 +64,100 @@ const BirdUpload = () => {
             hidden
           />
           <label htmlFor="image" className="upload-btn">
-            Choose Image
+            {preview ? "Change Image" : "Choose Image"}
           </label>
-        </div>
-
-        <div className="search-container">
-          <input 
-            type="text" 
-            className="search-bar" 
-            placeholder="Search bird species..."
-          />
+          
+          {preview && (
+            <div className="image-preview">
+              <img src={preview} alt="Upload preview" />
+            </div>
+          )}
         </div>
 
         <button type="submit" disabled={loading} className="submit-btn">
-          {loading ? "Analyzing..." : "Identify Species"}
+          {loading ? (
+            <>
+              <span className="spinner"></span>
+              Analyzing...
+            </>
+          ) : (
+            "Identify Species"
+          )}
         </button>
 
         {error && <div className="error">{error}</div>}
 
-        {species && (
+        {speciesData && (
           <div className="results">
             <h2 className="highlight-header">Identification Results</h2>
 
-            {/* Bird Details */}
             <div className="text-content">
-              <div className="species"><strong>Species:</strong> {species}</div>
-              <div className="scientificName"><strong>Scientific Name:</strong> {scientificName}</div>
-              <div className="lifespan"><strong>Lifespan:</strong> {lifeSpan}</div>
-              <div className="commonFood"><strong>Common Food:</strong> {commonFood}</div>
-              <div className="commonPredators"><strong>Common Predators:</strong> {commonPredators}</div>
-              <div className="description">{description}</div>
+              <div className="species">
+                <strong>Species:</strong> {speciesData.species}
+              </div>
+              <div className="scientificName">
+                <strong>Scientific Name:</strong> {speciesData.scientificName}
+              </div>
+              <div className="lifespan">
+                <strong>Lifespan:</strong> {speciesData.lifespan}
+              </div>
+              <div className="commonFood">
+                <strong>Common Food:</strong> {speciesData.commonFood}
+              </div>
+              <div className="commonPredators">
+                <strong>Common Predators:</strong> {speciesData.commonPredators}
+              </div>
+              <div className="description">{speciesData.description}</div>
             </div>
 
-            {/* Bird Sounds Section */}
-            {soundUrls.length > 0 ? (
-              <div className="sound-section">
+            <div className="media-sections">
+              <section className="sound-section">
                 <h3>Bird Sounds</h3>
-                {soundUrls.map((url, index) => (
-                  <audio key={index} controls className="audio-player">
-                    <source src={url} type="audio/mpeg" />
-                    Your browser does not support the audio element.
-                  </audio>
-                ))}
-              </div>
-            ) : (
-              <div className="no-sound">No sound samples available</div>
-            )}
-
-            {/* Updated Image Section */}
-            <div className="image-section">
-              <div className="image-container">
-                <h3>Bird Images</h3>
-                <div className="image-grid">
-                  {birdImages.map((img, index) => (
-                    <img 
-                      key={index} 
-                      src={img} 
-                      alt={`${species} example ${index + 1}`}
-                      className="bird-image"
-                    />
-                  ))}
+                <div className="audio-grid">
+                  {speciesData.soundUrls?.length > 0 ? (
+                    speciesData.soundUrls.map((url, index) => (
+                      <audio key={index} controls className="audio-player">
+                        <source src={url} type="audio/mpeg" />
+                        Your browser does not support audio
+                      </audio>
+                    ))
+                  ) : (
+                    <div className="no-content">No sound samples available</div>
+                  )}
                 </div>
-              </div>
-              
-              {nestImage.length > 0 && (
-                <div className="image-container">
-                  <h3>Nest Images</h3>
+              </section>
+
+              <section className="image-section">
+                <div className="bird-images">
+                  <h3>Bird Images</h3>
                   <div className="image-grid">
-                    {nestImage.map((img, index) => (
+                    {speciesData.images?.bird?.map((img, index) => (
                       <img
                         key={index}
                         src={img}
-                        alt={`${species} nest example ${index + 1}`}
-                        className="nest-image"
+                        alt={`${speciesData.species} example ${index + 1}`}
+                        loading="lazy"
                       />
                     ))}
                   </div>
                 </div>
-              )}
+
+                {speciesData.images?.nest?.length > 0 && (
+                  <div className="nest-images">
+                    <h3>Nest Images</h3>
+                    <div className="image-grid">
+                      {speciesData.images.nest.map((img, index) => (
+                        <img
+                          key={index}
+                          src={img}
+                          alt={`${speciesData.species} nest example ${index + 1}`}
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
             </div>
           </div>
         )}
