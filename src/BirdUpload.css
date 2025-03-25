@@ -1,189 +1,224 @@
+/* BirdUpload.css */
 :root {
-  --black: #000000;
-  --dark-bg: #0a0a0a;
-  --accent: #4a90e2;
-  --text: #ffffff;
-  --highlight: #34a853;
+  --primary: #3498db; /* Primary color */
+  --secondary: #2ecc71; /* Secondary color */
+  --error: #e74c3c; /* Error color */
+  --text: #2c3e50; /* Text color */
+  --light-gray: #ecf0f1; /* Light gray for backgrounds */
+  --background: #f9f9f9; /* Light background for sections */
+  --border-radius: 12px; /* Consistent border radius */
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
 
-body {
-  background-color: var(--black);
-  color: var(--text);
-  font-family: 'Arial', sans-serif;
-}
-
-/* Header Bar */
-.header-bar {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  padding: 1.5rem;
-  background: var(--dark-bg);
-  margin: 1rem auto;
-  max-width: 1200px;
-  border-radius: 12px;
-}
-
-.upload-container,
-.search-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Image Upload Box */
-.upload-box {
-  border: 2px dashed #333;
+.container {
+  background: white;
+  border-radius: var(--border-radius);
   padding: 2rem;
+  box-shadow: var(--shadow);
+  margin: 0 auto;
+  max-width: 800px; /* Limit width for larger screens */
+  transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.container:hover {
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.upload-section {
   text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.upload-box:hover {
-  border-color: var(--accent);
-  background: rgba(255, 255, 255, 0.808);
-}
-
-/* Search Input */
-.search-input {
-  width: 100%;
-  padding: 1rem;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  color: var(--text);
-  border-radius: 8px;
-}
-
-/* Identify Species Button */
-.identify-btn {
-  background: var(--accent);
-  color: var(--text);
-  padding: 1.2rem 3rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  display: block;
-  margin: 2rem auto;
-  transition: transform 0.2s;
-}
-
-.identify-btn:hover {
-  transform: translateY(-2px);
-}
-
-/* Results Layout */
-.results-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-}
-
-/* Image Display */
-.bird-image {
-  width: 100%;
-  max-height: 600px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* Details Panel */
-.details-panel {
-  background: var(--dark-bg);
-  padding: 2rem;
-  border-radius: 12px;
-}
-
-.species-name {
-  color: var(--highlight);
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.description-text {
-  line-height: 1.6;
-  color: #cccccc;
-  font-size: 1.1rem;
-}
-
-/* Pre-identification Layout */
-.pre-identification {
-  max-width: 800px;
-  margin: 4rem auto;
-  text-align: center;
-}
-
-.upload-prompt {
-  font-size: 1.2rem;
   margin-bottom: 2rem;
-  color: #888;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .header-bar {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .results-container {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-  }
-  
-  .species-name {
-    font-size: 2rem;
-  }
+.upload-btn {
+  background: var(--primary);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition */
+  display: inline-block;
+  font-weight: 500;
+  font-size: 1.1rem;
+  border: none; /* Remove default border */
 }
+
+.upload-btn:hover {
+  background: #2980b9; /* Darker shade on hover */
+  transform: translateY(-2px); /* Lift effect */
+}
+
 .image-preview {
-  width: 400px;
-  height: 300px;
-  margin: 20px auto;
-  border: 2px dashed #ccc;
+  margin: 1.5rem auto 0;
+  max-width: 400px;
+  border: 3px solid var(--light-gray);
+  border-radius: var(--border-radius);
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+}
+
+.image-preview:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow on hover */
 }
 
 .image-preview img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease; /* Smooth zoom effect */
 }
-/* Image grid styling */
+
+.image-preview img:hover {
+  transform: scale(1.05); /* Zoom effect on hover */
+}
+
+.submit-btn {
+  background: var(--secondary);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition */
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  display: block;
+}
+
+.submit-btn:hover {
+  background: #27ae60; /* Darker shade on hover */
+  transform: translateY(-2px); /* Lift effect */
+}
+
+.submit-btn:disabled {
+  background: #95a5a6; /* Gray out disabled button */
+  cursor: not-allowed; /* Change cursor */
+}
+
+.error {
+  color: var(--error);
+  margin: 1rem 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+.results {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--light-gray);
+}
+
+.highlight-header {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem; /* Larger font for emphasis */
+}
+
+.text-content div {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--light-gray);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow); /* Soft shadow for text blocks */
+}
+
+.text-content strong {
+  color: var(--primary);
+}
+
+.media-sections {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.audio-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.audio-player {
+  width: 100%;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow); /* Soft shadow for audio players */
+}
+
 .image-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  margin: 1rem 0;
+  margin-top: 1rem;
 }
 
 .image-grid img {
   width: 100%;
-  height: 250px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow); /* Soft shadow for images */
+  transition: transform 0.2s ease; /* Smooth zoom effect */
 }
 
 .image-grid img:hover {
-  transform: scale(1.03);
+  transform: scale(1.05); /* Zoom effect on hover */
 }
 
-/* Nest images specific styling */
-.nest-images .image-grid {
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+.map-section {
+  margin-top: 3rem;
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow); /* Soft shadow for map section */
 }
 
-.nest-images img {
-  height: 200px;
+.map-section h2 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.no-content {
+  text-align: center;
+  color: #95a5a6;
+  padding: 1rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    border-radius: 0; /* Remove border radius on small screens */
+  }
+
+  .highlight-header {
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+  }
+
+  .image-grid {
+    grid-template-columns: 1fr; /* Single column on small screens */
+  }
+
+  .map-section {
+    padding: 1rem; /* Adjust padding for smaller screens */
+  }
 }
