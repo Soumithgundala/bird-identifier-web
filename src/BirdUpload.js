@@ -112,97 +112,97 @@ const BirdUpload = () => {
           <div className="text-content">
             <div className="species">
               <strong>Species:</strong> {speciesData.species}
+              </div>
+              <div className="scientificName">
+                <strong>Scientific Name:</strong> {speciesData.scientificName}
+              </div>
+              <div className="lifespan">
+                <strong>Lifespan:</strong> {speciesData.lifespan}
+              </div>
+              <div className="commonFood">
+                <strong>Common Food:</strong> {speciesData.commonFood}
+              </div>
+              <div className="commonPredators">
+                <strong>Common Predators:</strong> {speciesData.commonPredators}
+              </div>
+              <div className="description">{speciesData.description}</div>
             </div>
-            <div className="scientificName">
-              <strong>Scientific Name:</strong> {speciesData.scientificName}
-            </div>
-            <div className="lifespan">
-              <strong>Lifespan:</strong> {speciesData.lifespan}
-            </div>
-            <div className="commonFood">
-              <strong>Common Food:</strong> {speciesData.commonFood}
-            </div>
-            <div className="commonPredators">
-              <strong>Common Predators:</strong> {speciesData.commonPredators}
-            </div>
-            <div className="description">{speciesData.description}</div>
-          </div>
 
-          <div className="media-sections">
-            <section className="sound-section">
-              <h3>Bird Sounds</h3>
-              <div className="audio-grid">
-                {speciesData.soundUrls?.length > 0 ? (
-                  speciesData.soundUrls.map((url, index) => (
-                    <audio key={index} controls className="audio-player">
-                      <source src={url} type="audio/mpeg" />
-                      Your browser does not support audio
-                    </audio>
-                  ))
-                ) : (
-                  <div className="no-content">No sound samples available</div>
-                )}
-              </div>
-            </section>
-            <section className="image-section">
-              <div className="bird-images">
-                <h3>Bird Images</h3>
-                <div className="image-grid">
-                  {speciesData.images?.bird?.map((img, index) => (
-                    <img
-                      key={index}
-                      src={img}
-                      alt={`${speciesData.species} example ${index + 1}`}
-                      loading="lazy"
-                    />
-                  ))}
+            <div className="media-sections">
+              <section className="sound-section">
+                <h3>Bird Sounds</h3>
+                <div className="audio-grid">
+                  {speciesData.soundUrls?.length > 0 ? (
+                    speciesData.soundUrls.map((url, index) => (
+                      <audio key={index} controls className="audio-player">
+                        <source src={url} type="audio/mpeg" />
+                        Your browser does not support audio
+                      </audio>
+                    ))
+                  ) : (
+                    <div className="no-content">No sound samples available</div>
+                  )}
                 </div>
-              </div>
-              {speciesData.images?.nest?.length > 0 && (
-                <div className="nest-images">
-                  <h3>Nest Images</h3>
+              </section>
+              <section className="image-section">
+                <div className="bird-images">
+                  <h3>Bird Images</h3>
                   <div className="image-grid">
-                    {speciesData.images.nest.map((img, index) => (
+                    {speciesData.images?.bird?.map((img, index) => (
                       <img
                         key={index}
                         src={img}
-                        alt={`${speciesData.species} nest example ${index + 1}`}
+                        alt={`${speciesData.species} example ${index + 1}`}
                         loading="lazy"
                       />
                     ))}
                   </div>
                 </div>
-              )}
-            </section>
+                {speciesData.images?.nest?.length > 0 && (
+                  <div className="nest-images">
+                    <h3>Nest Images</h3>
+                    <div className="image-grid">
+                      {speciesData.images.nest.map((img, index) => (
+                        <img
+                          key={index}
+                          src={img}
+                          alt={`${speciesData.species} nest example ${index + 1}`}
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+            </div>
           </div>
-        </div>
       )}
 
       {/* Map Section to display common bird locations and migration route */}
       {birdLocations.length > 0 && (
         <div className="map-section">
-        <h2>Common Locations & Migration Route</h2>
+          <h2>Common Locations & Migration Route</h2>
         <MapContainer center={[40, -95]} zoom={6} style={{ height: "500px", width: "100%" }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
-          />
-          {birdLocations.map((obs, index) => (
-            <Marker key={index} position={[obs.lat, obs.lng]}>
-              <Popup>
-                <strong>{obs.comName}</strong>
-                <br />
-                {obs.locName}
-                <br />
-                Observed: {obs.obsDt}
-              </Popup>
-            </Marker>
-          ))}
-          {migrationPath.length > 1 && (
-            <Polyline positions={migrationPath} color="blue" />
-          )}
-        </MapContainer>
-      </div>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; OpenStreetMap contributors"
+            />
+            {birdLocations.map((obs, index) => (
+              <Marker key={index} position={[obs.lat, obs.lng]}>
+                <Popup>
+                  <strong>{obs.comName}</strong>
+                  <br />
+                  {obs.locName}
+                  <br />
+                  Observed: {obs.obsDt}
+                </Popup>
+              </Marker>
+            ))}
+            {migrationPath.length > 1 && (
+              <Polyline positions={migrationPath} color="blue" />
+            )}
+          </MapContainer>
+        </div>
       
       )}
     </div>
