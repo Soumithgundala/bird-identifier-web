@@ -287,4 +287,26 @@
   margin-top: 2rem;
 }
 
-/* Existing styles remain the same */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-marker-icon {
+  background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png);
+  background-size: contain;
+}
+
+.image-grid img {
+  max-width: 200px;
+  height: auto;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.audio-grid audio {
+  margin: 10px;
+  width: 250px;
+}
