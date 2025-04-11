@@ -310,3 +310,13 @@
   margin: 10px;
   width: 250px;
 }
+/* Add these lines at the bottom */
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+  z-index: 1;
+}
+
+.leaflet-marker-icon {
+  background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png);
+}

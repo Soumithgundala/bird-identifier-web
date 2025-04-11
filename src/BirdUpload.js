@@ -4,18 +4,22 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet"
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
-
-// Import TensorFlow.js and MobileNet
 import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 
-// Fix leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-    iconUrl: require('leaflet/dist/images/marker-icon.png'),
-    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png').default,
+  iconUrl: require('leaflet/dist/images/marker-icon.png').default,
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png').default,
 });
+// // Fix leaflet marker icons
+// delete L.Icon.Default.prototype._getIconUrl;
+// L.Icon.Default.mergeOptions({
+//     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+//     iconUrl: require('leaflet/dist/images/marker-icon.png'),
+//     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+// });
 
 const BirdUpload = () => {
     const [preview, setPreview] = useState("");
@@ -25,7 +29,7 @@ const BirdUpload = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const fileInputRef = useRef(null);
-    const mapRef = useRef(null);
+    const mapRef = useRef();
     const [mlModel, setMlModel] = useState(null); // State for the ML model
     const [mlPredictions, setMlPredictions] = useState([]);
 
@@ -257,6 +261,7 @@ const BirdUpload = () => {
                                                 alt={`${speciesData.species} nest example ${index + 1}`}
                                                 loading="lazy"
                                             />
+                                            
                                         ))}
                                     </div>
                                 </div>
@@ -303,5 +308,4 @@ const BirdUpload = () => {
         </div>
     );
 };
-
 export default BirdUpload;
